@@ -7,7 +7,7 @@ key = "2f05dce1-e69f-4ab9-b618-4655a1d75cb0"      # Replace with your GraphHoppe
 
 def geocoding (location, key):
     while location == "":
-        location = input("Enter the location again: ")
+        location = input("Introduce la ubicacion de nuevo: ")
     geocode_url = "http://localhost:8082/api/1/geocode?"
     url = geocode_url + urllib.parse.urlencode({"q":location, "limit": "1", "key":key})
 
@@ -51,13 +51,14 @@ def geocoding (location, key):
     return json_status,lat,lng,new_loc
 
 while True:
-    loc1 = input("Starting Location: ")
-    if loc1 == "salir" or loc1 == "q":
+    print("Escriba s o salir para finalizar el contenido")
+    loc1 = input("Ubicacion de inicio:")
+    if loc1 == "salir" or loc1 == "s":
         break
     orig = geocoding(loc1, key)
 
-    loc2 = input("Destination: ")
-    if loc2 == "salir" or loc2 == "q":
+    loc2 = input("Destino: ")
+    if loc2 == "salir" or loc2 == "s":
         break
     dest = geocoding(loc2, key)
 
@@ -71,7 +72,7 @@ while True:
         print("Routing API Status: " + str(paths_status) + "\nRouting API URL:\n" + paths_url)
 
         print("=================================================")
-        print("Directions from " + orig[3] + " to " + dest[3])
+        print("Indicaciones desde " + orig[3] + " to " + dest[3])
         print("=================================================")
         if paths_status == 200:
             km = (paths_data["paths"][0]["distance"])/1000
@@ -79,8 +80,8 @@ while True:
             sec = int(paths_data["paths"][0]["time"]/1000%60)
             min = int(paths_data["paths"][0]["time"]/1000/60%60)
             hr = int(paths_data["paths"][0]["time"]/1000/60/60)
-            print("Distance Traveled: {0:.1f} km / {1:.1f} m".format(km, meters))
-            print("Trip Duration: {0:02d}:{1:02d}:{2:02d}".format(hr, min, sec))
+            print("Distancia Reccoridda : {0:.1f} km / {1:.1f} m".format(km, meters))
+            print("Duracion del Viaje: {0:02d}:{1:02d}:{2:02d}".format(hr, min, sec))
             print("=================================================")
             for each in range(len(paths_data["paths"][0]["instructions"])):
                 path = paths_data["paths"][0]["instructions"][each]["text"]
